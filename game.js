@@ -1,13 +1,12 @@
 function createDiv(x, y) {
     var div = document.createElement("div");
-    div.style.position = "absolute";
+    div.classList.add('fieldCell');
     div.style.top = y + "px";
     div.style.left = x + "px";
+    /*div.style.position = "absolute";
     div.style.width = "20px";
     div.style.height = "20px";
-    div.style.backgroundColor = "chartreuse";
-//div.style.border = "1px solid red";
-//return "<div style='position: absolute; top: " + y + "px; left: " + x + "px; width: 20px; height: 20px; background-color: chartreuse; border: 1px solid red'></div>"
+    div.style.backgroundColor = "chartreuse";*/
     return div;
 }
 
@@ -56,6 +55,7 @@ function startGame() {
     var apple = createApel();
 
     var interval = setInterval(function () {
+        checkVictory(snake);
         changeSnakeCoordinats(snake, direction, apple);
         var coll = collisionCheck(snake);
         redrawAllField(arr);
@@ -91,14 +91,6 @@ function checkIfAppleOverlapsSnake(snake, apple) {
             bool=true;
     });
     return bool;
-}
-
-function redrawAllField(arr) {
-    for (var i = 0; i < arr.length; i++) {
-        for (var j = 0; j < arr[i].length; j++) {
-            arr[i][j].style.backgroundColor = "chartreuse";
-        }
-    }
 }
 
 function changeSnakeCoordinats(snake, direction, apple) {
@@ -156,13 +148,33 @@ function collisionCheck(snake) {
 
 function redrawSnake(fieldArr, snake) {
     for (var i = 1; i < snake.length; i++) {
-        fieldArr[snake[i].x][snake[i].y].style.backgroundColor = "green";
+        fieldArr[snake[i].x][snake[i].y].removeAttribute("class");
+        fieldArr[snake[i].x][snake[i].y].classList.add('snake');
     }
-    fieldArr[snake[0].x][snake[0].y].style.backgroundColor = "brown";
+    fieldArr[snake[0].x][snake[0].y].removeAttribute("class");
+    fieldArr[snake[0].x][snake[0].y].classList.add('snakeHead');
 }
 
 function redrawApple(fieldArr, apple) {
-    fieldArr[apple.x][apple.y].style.backgroundColor = "red";
+    fieldArr[apple.x][apple.y].removeAttribute("class");
+    fieldArr[apple.x][apple.y].classList.add('apple');
+    //fieldArr[apple.x][apple.y].style.backgroundColor = "red";
+}
+
+function redrawAllField(arr) {
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr[i].length; j++) {
+            arr[i][j].removeAttribute("class");
+            arr[i][j].classList.add('fieldCell');
+            //arr[i][j].style.backgroundColor = "chartreuse";
+        }
+    }
+}
+
+function checkVictory(snake) {
+    if(snake.length==21){
+        alert("Congratulations, you're winnner beginner level the game!!!");
+    }
 }
 
 function createSnakePart(x, y, direction) {
